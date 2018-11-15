@@ -1,18 +1,20 @@
+/*
 package com.ryanmichela.sshd;
+*/
 
 /**
  * Copyright 2013 Ryan Michela
  */
 
-import cn.nukkit.Nukkit;
+/*
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandMap;
 import cn.nukkit.scheduler.TaskHandler;
+import cn.nukkit.utils.LogLevel;
 import jline.console.completer.Completer;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 
 public class ConsoleCommandCompleter implements Completer {
 
@@ -40,7 +42,7 @@ public class ConsoleCommandCompleter implements Completer {
                 return cursor - (buffer.length() - lastSpace - 1);
             }
         } catch (ExecutionException e) {
-            SshdPlugin.instance.getLogger().log(Level.WARNING, "Unhandled exception when tab completing", e);
+            SshdPlugin.instance.getLogger().log(LogLevel.WARNING, "Unhandled exception when tab completing", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -49,3 +51,5 @@ public class ConsoleCommandCompleter implements Completer {
     }
 }
 
+TODO Get Tab completion to work with Nukkit
+*/

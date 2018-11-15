@@ -16,4 +16,8 @@ public class Conversation {
     {
         return null;
     }
+
+    public void acceptInput(String input)
+    {
+    }
 }

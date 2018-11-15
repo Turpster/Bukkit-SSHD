@@ -1,7 +1,7 @@
 package com.ryanmichela.sshd.implementations;
 
-import cn.nukkit.plugin.PluginLogger;
-import cn.nukkit.utils.MainLogger;
+import cn.nukkit.utils.LogLevel;
+import com.ryanmichela.sshd.SshdPlugin;
 import xyz.wackster.nukkitutils.Conversation;
 import xyz.wackster.nukkitutils.ConversationAbandonedEvent;
 import xyz.wackster.nukkitutils.ManuallyAbandonedConversationCanceller;
@@ -9,7 +9,7 @@ import xyz.wackster.nukkitutils.ManuallyAbandonedConversationCanceller;
 import java.util.LinkedList;
 
 public class SSHDConversationTracker {
-    private LinkedList<Conversation> conversationQueue = new LinkedList<>();
+    private LinkedList<Conversation> conversationQueue = new LinkedList<Conversation>();
 
     synchronized boolean beginConversation(Conversation conversation) {
         if (!this.conversationQueue.contains(conversation)) {
@@ -49,7 +49,7 @@ public class SSHDConversationTracker {
             try {
                 conversation.abandon(new ConversationAbandonedEvent(conversation, new ManuallyAbandonedConversationCanceller()));
             } catch (Throwable var5) {
-                Logger.(Level.SEVERE, "Unexpected exception while abandoning a conversation", var5);
+                SshdPlugin.instance.getLogger().log(LogLevel.EMERGENCY, "Unexpected exception while abandoning a conversation", var5);
             }
         }
 
@@ -62,7 +62,7 @@ public class SSHDConversationTracker {
             try {
                 conversation.acceptInput(input);
             } catch (Throwable var4) {
-                conversation.getContext().getPlugin().getLogger().log(Level.WARNING, String.format("Plugin %s generated an exception whilst handling conversation input", conversation.getContext().getPlugin().getDescription().getFullName()), var4);
+                SshdPlugin.instance.getLogger().log(LogLevel.WARNING, String.format("Plugin %s generated an exception whilst handling conversation input", conversation.getContext().getPlugin().getDescription().getFullName()), var4);
             }
         }
 
@@ -70,9 +70,5 @@ public class SSHDConversationTracker {
 
     synchronized boolean isConversing() {
         return !this.conversationQueue.isEmpty();
-    }
-
-    public synchronized boolean isConversingModaly() {
-        return this.isConversing() && this.conversationQueue.getFirst().isModal();
     }
 }

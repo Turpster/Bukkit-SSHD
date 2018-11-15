@@ -1,9 +1,11 @@
 package xyz.wackster.nukkitutils;
 
+import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.utils.LogLevel;
 
 import java.util.logging.Level;
 import java.util.regex.Pattern;
+
 public class NukkitUtil
 {
     private static final char COLOR_CHAR = '\u00A7';
@@ -35,7 +37,6 @@ public class NukkitUtil
                 return LogLevel.WARNING;
             case 800: // INFO
                 return LogLevel.INFO;
-
             case 500: // FINE
             case 400: // FINER
             case 300: // FINEST

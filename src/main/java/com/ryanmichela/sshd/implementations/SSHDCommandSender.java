@@ -1,25 +1,23 @@
 package com.ryanmichela.sshd.implementations;
 
+
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.permission.PermissibleBase;
 import cn.nukkit.permission.Permission;
 import cn.nukkit.permission.PermissionAttachment;
-import cn.nukkit.permission.PermissionAttachmentInfo;
 import cn.nukkit.plugin.Plugin;
+import cn.nukkit.utils.LogLevel;
 import com.ryanmichela.sshd.ConsoleShellFactory;
-import xyz.wackster.nukkitutils.NukkitUtil;
 import com.ryanmichela.sshd.SshdPlugin;
 import xyz.wackster.nukkitutils.Conversation;
 import xyz.wackster.nukkitutils.ConversationAbandonedEvent;
 import xyz.wackster.nukkitutils.ManuallyAbandonedConversationCanceller;
-
+import xyz.wackster.nukkitutils.NukkitUtil;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Set;
-import java.util.logging.Level;
 
 public class SSHDCommandSender extends ConsoleCommandSender implements CommandSender {
 
@@ -35,7 +33,7 @@ public class SSHDCommandSender extends ConsoleCommandSender implements CommandSe
         try {
             ConsoleShellFactory.ConsoleShell.consoleReader.println(NukkitUtil.stripColor(message));
         } catch (IOException e) {
-            SshdPlugin.instance.getLogger().log(Level.SEVERE, "Error sending message to SSHDCommandSender", e);
+            SshdPlugin.instance.getLogger().log(LogLevel.EMERGENCY, "Error sending message to SSHDCommandSender", e);
         }
     }
 
@@ -99,24 +97,12 @@ public class SSHDCommandSender extends ConsoleCommandSender implements CommandSe
         return this.perm.addAttachment(plugin);
     }
 
-    public PermissionAttachment addAttachment(Plugin plugin, String name, boolean value, int ticks) {
-        return this.perm.addAttachment(plugin, name, value, ticks);
-    }
-
-    public PermissionAttachment addAttachment(Plugin plugin, int ticks) {
-        return this.perm.addAttachment(plugin, ticks);
-    }
-
     public void removeAttachment(PermissionAttachment attachment) {
         this.perm.removeAttachment(attachment);
     }
 
     public void recalculatePermissions() {
         this.perm.recalculatePermissions();
-    }
-
-    public Set<PermissionAttachmentInfo> getEffectivePermissions() {
-        return this.perm.getEffectivePermissions();
     }
 
     public boolean isPlayer() {
