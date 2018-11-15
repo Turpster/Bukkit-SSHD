@@ -1,6 +1,6 @@
 package com.ryanmichela.sshd;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.sshd.server.auth.pubkey.PublickeyAuthenticator;
 import org.apache.sshd.server.session.ServerSession;
 
@@ -37,11 +37,11 @@ public class PublicKeyAuthenticator implements PublickeyAuthenticator {
                         return true;
                     }
                 } else {
-                    SshdPlugin.instance.getLogger().severe("Failed to parse PEM file. " + keyFile.getAbsolutePath());
+                    SshdPlugin.instance.getLogger().emergency("Failed to parse PEM file. " + keyFile.getAbsolutePath());
                 }
             } catch (Exception e) {
                 SshdPlugin.instance.getLogger()
-                        .severe("Failed to process public key " + keyFile.getAbsolutePath() + ". " + e.getMessage());
+                        .emergency("Failed to process public key " + keyFile.getAbsolutePath() + ". " + e.getMessage());
             }
         } else {
             SshdPlugin.instance.getLogger().warning("Could not locate public key for " + username +

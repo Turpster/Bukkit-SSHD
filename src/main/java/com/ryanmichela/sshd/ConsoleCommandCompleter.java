@@ -4,9 +4,11 @@ package com.ryanmichela.sshd;
  * Copyright 2013 Ryan Michela
  */
 
+import cn.nukkit.Nukkit;
+import cn.nukkit.Server;
+import cn.nukkit.command.CommandMap;
+import cn.nukkit.scheduler.TaskHandler;
 import jline.console.completer.Completer;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandMap;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -18,11 +20,12 @@ public class ConsoleCommandCompleter implements Completer {
         Waitable<List<String>> waitable = new Waitable<List<String>>() {
             @Override
             protected List<String> evaluate() {
-                CommandMap commandMap = ReflectionUtil.getProtectedValue(Bukkit.getServer(), "commandMap");
-                return commandMap.tabComplete(Bukkit.getServer().getConsoleSender(), buffer);
+                CommandMap commandMap = ReflectionUtil.getProtectedValue(Server.getInstance(), "commandMap");
+                return commandMap.tabComplete(Server.getInstance().getConsoleSender(), buffer);
             }
-        };
-        Bukkit.getScheduler().runTask(SshdPlugin.instance, waitable);
+        }.run(Server.getInstance().getTick() + 1); // TODO Remove +1 and check it works afterwards - Turpster
+        TaskHandler tHandle = Server.getInstance().getScheduler().scheduleTask(SshdPlugin.instance, waitable);
+
         try {
             List<String> offers = waitable.get();
             if (offers == null) {
@@ -41,6 +44,7 @@ public class ConsoleCommandCompleter implements Completer {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
         return cursor;
     }
 }

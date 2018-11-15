@@ -1,5 +1,8 @@
 package com.ryanmichela.sshd;
 
+import cn.nukkit.Server;
+import cn.nukkit.scheduler.TaskHandler;
+import cn.nukkit.utils.LogLevel;
 import com.ryanmichela.sshd.implementations.SSHDCommandSender;
 import jline.console.ConsoleReader;
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +11,6 @@ import org.apache.sshd.common.Factory;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
-import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,21 +105,27 @@ public class ConsoleShellFactory implements Factory<Command> {
                     String command = consoleReader.readLine("\r>", null);
                     if (command == null) continue;
                     if (command.equals("exit") || command.equals("quit")) break;
-                    Bukkit.getScheduler().runTask(SshdPlugin.instance, () -> {
+
+                    // TODO Schedule Task might not execute but just schedule a task.- Turpster
+                    TaskHandler tHandle = Server.getInstance().getScheduler().scheduleTask(SshdPlugin.instance, () -> {
                         if (SshdPlugin.instance.getConfig().getString("mode").equals("RPC") &&
                             command.startsWith("rpc")) {
                             //NO ECHO NO PREAMBLE AND SHIT
                             String cmd = command.substring("rpc".length() + 1, command.length());
-                            Bukkit.dispatchCommand(sshdCommandSender, cmd);
+                            Server.getInstance().dispatchCommand(sshdCommandSender, cmd);
                         } else {
                             SshdPlugin.instance.getLogger()
                                     .info("<" + environment.getEnv().get(Environment.ENV_USER) + "> " + command);
-                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                            Server.getInstance().dispatchCommand(Server.getInstance().getConsoleSender(), command);
                         }
                     });
+
+
+                    //TODO Might be able to remove the + 1 if works;
+                    tHandle.run(Server.getInstance().getTick() + 1);
                 }
             } catch (IOException e) {
-                SshdPlugin.instance.getLogger().log(Level.SEVERE, "Error processing command from SSH", e);
+                SshdPlugin.instance.getLogger().log(LogLevel.EMERGENCY, "Error processing command from SSH", e);
             } finally {
                 callback.onExit(0);
             }
@@ -130,8 +138,8 @@ public class ConsoleShellFactory implements Factory<Command> {
             consoleReader.println(" \\___ \\\\___ \\|  __  | |  | |" + "\r");
             consoleReader.println(" ____) |___) | |  | | |__| |" + "\r");
             consoleReader.println("|_____/_____/|_|  |_|_____/" + "\r");
-            consoleReader.println("Connected to: " + Bukkit.getServer().getName() + "\r");
-            consoleReader.println("- " + Bukkit.getServer().getMotd() + "\r");
+            consoleReader.println("Connected to: " + Server.getInstance().getName() + "\r");
+            consoleReader.println("- " + Server.getInstance().getMotd() + "\r");
             consoleReader.println("\r");
             consoleReader.println("Type 'exit' to exit the shell." + "\r");
             consoleReader.println("===============================================" + "\r");

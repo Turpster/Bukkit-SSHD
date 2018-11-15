@@ -1,10 +1,10 @@
 package com.ryanmichela.sshd;
 
+import cn.nukkit.Server;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.CommandFactory;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
-import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,9 +54,9 @@ public class ConsoleCommandFactory implements CommandFactory {
             try {
                 SshdPlugin.instance.getLogger()
                         .info("[U: " + environment.getEnv().get(Environment.ENV_USER) + "] " + command);
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                Server.getInstance().dispatchCommand(Server.getInstance().getConsoleSender(), command);
             } catch (Exception e) {
-                SshdPlugin.instance.getLogger().severe("Error processing command from SSH -" + e.getMessage());
+                SshdPlugin.instance.getLogger().emergency("Error processing command from SSH -" + e.getMessage());
             } finally {
                 callback.onExit(0);
             }

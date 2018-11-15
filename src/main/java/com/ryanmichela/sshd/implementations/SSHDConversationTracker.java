@@ -1,12 +1,12 @@
 package com.ryanmichela.sshd.implementations;
 
-import org.bukkit.Bukkit;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
+import cn.nukkit.plugin.PluginLogger;
+import cn.nukkit.utils.MainLogger;
+import xyz.wackster.nukkitutils.Conversation;
+import xyz.wackster.nukkitutils.ConversationAbandonedEvent;
+import xyz.wackster.nukkitutils.ManuallyAbandonedConversationCanceller;
 
 import java.util.LinkedList;
-import java.util.logging.Level;
 
 public class SSHDConversationTracker {
     private LinkedList<Conversation> conversationQueue = new LinkedList<>();
@@ -49,7 +49,7 @@ public class SSHDConversationTracker {
             try {
                 conversation.abandon(new ConversationAbandonedEvent(conversation, new ManuallyAbandonedConversationCanceller()));
             } catch (Throwable var5) {
-                Bukkit.getLogger().log(Level.SEVERE, "Unexpected exception while abandoning a conversation", var5);
+                Logger.(Level.SEVERE, "Unexpected exception while abandoning a conversation", var5);
             }
         }
 

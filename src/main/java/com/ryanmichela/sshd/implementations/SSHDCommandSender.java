@@ -1,27 +1,27 @@
 package com.ryanmichela.sshd.implementations;
 
+import cn.nukkit.Server;
+import cn.nukkit.command.CommandSender;
+import cn.nukkit.command.ConsoleCommandSender;
+import cn.nukkit.permission.PermissibleBase;
+import cn.nukkit.permission.Permission;
+import cn.nukkit.permission.PermissionAttachment;
+import cn.nukkit.permission.PermissionAttachmentInfo;
+import cn.nukkit.plugin.Plugin;
 import com.ryanmichela.sshd.ConsoleShellFactory;
+import xyz.wackster.nukkitutils.NukkitUtil;
 import com.ryanmichela.sshd.SshdPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Server;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationAbandonedEvent;
-import org.bukkit.conversations.ManuallyAbandonedConversationCanceller;
-import org.bukkit.permissions.PermissibleBase;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.permissions.PermissionAttachmentInfo;
-import org.bukkit.plugin.Plugin;
+import xyz.wackster.nukkitutils.Conversation;
+import xyz.wackster.nukkitutils.ConversationAbandonedEvent;
+import xyz.wackster.nukkitutils.ManuallyAbandonedConversationCanceller;
+
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class SSHDCommandSender implements ConsoleCommandSender, CommandSender {
+public class SSHDCommandSender extends ConsoleCommandSender implements CommandSender {
 
     private final PermissibleBase perm = new PermissibleBase(this);
     private final SSHDConversationTracker conversationTracker = new SSHDConversationTracker();
@@ -33,7 +33,7 @@ public class SSHDCommandSender implements ConsoleCommandSender, CommandSender {
     public void sendRawMessage(String message) {
         if(ConsoleShellFactory.ConsoleShell.consoleReader == null) return;
         try {
-            ConsoleShellFactory.ConsoleShell.consoleReader.println(ChatColor.stripColor(message));
+            ConsoleShellFactory.ConsoleShell.consoleReader.println(NukkitUtil.stripColor(message));
         } catch (IOException e) {
             SshdPlugin.instance.getLogger().log(Level.SEVERE, "Error sending message to SSHDCommandSender", e);
         }
@@ -124,7 +124,7 @@ public class SSHDCommandSender implements ConsoleCommandSender, CommandSender {
     }
 
     public Server getServer() {
-        return Bukkit.getServer();
+        return Server.getInstance();
     }
 
 }

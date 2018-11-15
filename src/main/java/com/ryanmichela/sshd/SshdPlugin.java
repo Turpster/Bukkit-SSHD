@@ -1,10 +1,13 @@
 package com.ryanmichela.sshd;
 
+import cn.nukkit.plugin.Plugin;
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.plugin.PluginLogger;
+import cn.nukkit.utils.LogLevel;
 import org.apache.sshd.common.file.virtualfs.VirtualFileSystemFactory;
 import org.apache.sshd.server.SshServer;
 import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.apache.sshd.server.subsystem.sftp.SftpSubsystemFactory;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,10 +18,16 @@ import java.util.logging.Level;
 /**
  * Copyright 2013 Ryan Michela
  */
-public class SshdPlugin extends JavaPlugin {
+public class SshdPlugin extends PluginBase {
 
     private SshServer sshd;
     public static SshdPlugin instance;
+
+    private PluginLogger logger;
+
+    public PluginLogger getLogger() {
+        return logger;
+    }
 
     @Override
     public void onLoad() {
@@ -28,15 +37,21 @@ public class SshdPlugin extends JavaPlugin {
             authorizedKeys.mkdirs();
         }
 
+        // TODO Take note:
+
         // Don't go any lower than INFO or SSHD will cause a stack overflow exception.
         // SSHD will log that it wrote bites to the output stream, which writes
         // bytes to the output stream - ad nauseaum.
-        getLogger().setLevel(Level.INFO);
+
+        // Nukkit does not use Java Logger's. - Turpster
+        // logger.setLevel(Level.INFO);
     }
 
     @Override
     public void onEnable() {
         instance = this;
+
+        logger = new PluginLogger(this);
 
         sshd = SshServer.setUpDefaultServer();
         sshd.setPort(getConfig().getInt("port", 22));
@@ -64,7 +79,7 @@ public class SshdPlugin extends JavaPlugin {
         try {
             sshd.start();
         } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Failed to start SSH server! ", e);
+            getLogger().log(LogLevel.EMERGENCY, "Failed to start SSH server!", e);
         }
     }
 

@@ -52,7 +52,7 @@ public class ConsoleLogFormatter extends Formatter {
 
     private void colorize(LogRecord logrecord) {
         // ORIGINAL CODE FROM org.bukkit.craftbukkit.command.ColouredConsoleSender
-        final Map<ChatColor, String> replacements = new EnumMap<>(ChatColor.class);
+        final Map<ChatColor, String> replacements = new EnumMap<ChatColor, String>(ChatColor.class);
 
         replacements
                 .put(ChatColor.BLACK, Ansi.ansi().a(Ansi.Attribute.RESET).fg(Ansi.Color.BLACK).boldOff().toString());

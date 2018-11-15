@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
+import xyz.wackster.nukkitutils.NukkitUtil;
 
 import java.util.logging.Level;
 
@@ -22,19 +23,20 @@ public class PluginSlf4jFactory implements ILoggerFactory {
         private String name;
 
         private boolean isEnabled(Level level) {
-            return SshdPlugin.instance != null && SshdPlugin.instance.getLogger().isLoggable(level);
+            return SshdPlugin.instance != null
+                    /* Nukkit Loggers cannot be disabled. | && SshdPlugin.instance.getLogger().isLoggable(level) */;
         }
 
         private void log(Level level, String s, Object[] objects) {
            if (SshdPlugin.instance != null && isEnabled(level)) {
                FormattingTuple ft = MessageFormatter.arrayFormat(s, objects);
-               SshdPlugin.instance.getLogger().log(level, ft.getMessage(), ft.getThrowable());
+               SshdPlugin.instance.getLogger().log(NukkitUtil.toLogLevel(level), ft.getMessage(), ft.getThrowable());
            }
         }
 
         private void log(Level level, String s, Throwable throwable) {
             if (SshdPlugin.instance != null && isEnabled(level)) {
-                SshdPlugin.instance.getLogger().log(level, s, throwable);
+                SshdPlugin.instance.getLogger().log(NukkitUtil.toLogLevel(level), s, throwable);
             }
         }
 
