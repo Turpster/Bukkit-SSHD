@@ -20,6 +20,7 @@ public class PublicKeyAuthenticator implements PublickeyAuthenticator {
     }
 
     @Override
+    @Deprecated
     public boolean authenticate(String username, PublicKey key, ServerSession session) {
         byte[] keyBytes = key.getEncoded();
         File keyFile = new File(authorizedKeysDir, username);

@@ -17,6 +17,7 @@ public abstract class NumericPrompt extends ValidatingPrompt {
     }
 
     @Override
+    @Deprecated
     protected boolean isInputValid(ConversationContext context, String input) {
         return NumberUtils.isNumber(input) && isNumberValid(context, NumberUtils.createNumber(input));
     }
@@ -53,6 +54,7 @@ public abstract class NumericPrompt extends ValidatingPrompt {
     protected abstract Prompt acceptValidatedInput(ConversationContext context, Number input);
 
     @Override
+    @Deprecated
     protected String getFailedValidationText(ConversationContext context, String invalidInput) {
         if (NumberUtils.isNumber(invalidInput)) {
             return getFailedValidationText(context, NumberUtils.createNumber(invalidInput));

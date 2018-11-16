@@ -1,4 +1,5 @@
-name: SSHD
-version: ${project.version}
-author: Ryan Michela, Haarolean, toxuin, Turpster
 main: com.ryanmichela.sshd.SshdPlugin
+name: SSHD
+version: "${project.version}"
+api: ["1.0.0"]
+authors: ["Ryan Michela", "Haarolean", "toxuin", "Turpster"]
