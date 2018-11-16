@@ -1,10 +1,10 @@
 package com.ryanmichela.sshd;
 
 import cn.nukkit.Server;
-import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.LogLevel;
 import com.ryanmichela.sshd.implementations.SSHDCommandSender;
 import jline.console.ConsoleReader;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.sshd.common.Factory;
@@ -37,6 +37,9 @@ public class ConsoleShellFactory implements Factory<Command> {
         private ExitCallback callback;
         private Environment environment;
         private Thread thread;
+
+        String command = ">";
+
 
         StreamHandlerAppender streamHandlerAppender;
         public static ConsoleReader consoleReader;
@@ -96,17 +99,17 @@ public class ConsoleShellFactory implements Factory<Command> {
             ((Logger) LogManager.getRootLogger()).removeAppender(streamHandlerAppender);
         }
 
-        public void run() {
+        public synchronized void run() {
             try {
                 if (!SshdPlugin.instance.getConfig().getString("mode").equals("RPC"))
                     printPreamble(consoleReader);
                 while (true) {
                     String command = consoleReader.readLine("\r>", null);
-                    if (command == null) continue;
-                    if (command.equals("exit") || command.equals("quit")) break;
 
-                    // TODO Schedule Task might not execute but just schedule a task.- Turpster
-                    TaskHandler tHandle = Server.getInstance().getScheduler().scheduleTask(SshdPlugin.instance, () -> {
+                    if (command == null) continue;
+
+                    if (command.equals("exit") || command.equals("quit")) break;
+                    Server.getInstance().getScheduler().scheduleTask(SshdPlugin.instance, () -> {
                         if (SshdPlugin.instance.getConfig().getString("mode").equals("RPC") &&
                                 command.startsWith("rpc")) {
                             //NO ECHO NO PREAMBLE AND SHIT
@@ -115,13 +118,9 @@ public class ConsoleShellFactory implements Factory<Command> {
                         } else {
                             SshdPlugin.instance.getLogger()
                                     .info("<" + environment.getEnv().get(Environment.ENV_USER) + "> " + command);
-                            Server.getInstance().dispatchCommand(Server.getInstance().getConsoleSender(), command);
+                            Server.getInstance().dispatchCommand(sshdCommandSender, command);
                         }
                     });
-
-
-                    //TODO Might be able to remove the + 1 if works;
-                    tHandle.run(Server.getInstance().getTick() + 1);
                 }
             } catch (IOException e) {
                 SshdPlugin.instance.getLogger().log(LogLevel.EMERGENCY, "Error processing command from SSH", e);

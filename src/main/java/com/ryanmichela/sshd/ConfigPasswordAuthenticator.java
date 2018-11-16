@@ -11,10 +11,11 @@ import java.util.Map;
  */
 public class ConfigPasswordAuthenticator implements PasswordAuthenticator {
 
-    private Map<String, Integer> failCounts = new HashMap<String, Integer>();
+    private Map<String, Integer> failCounts = new HashMap<>();
 
     @Override
-    public boolean authenticate(String username, String password, ServerSession serverSession) {
+    public boolean authenticate(String username, String password, ServerSession serverSession)
+    {
         if (SshdPlugin.instance.getConfig().getString("credentials." + username).equals(password)) {
             failCounts.put(username, 0);
             return true;

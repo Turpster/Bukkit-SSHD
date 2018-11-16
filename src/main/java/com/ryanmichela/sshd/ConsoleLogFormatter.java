@@ -52,6 +52,7 @@ public class ConsoleLogFormatter extends Formatter {
 
     private void colorize(LogRecord logrecord) {
         // ORIGINAL CODE FROM org.bukkit.craftbukkit.command.ColouredConsoleSender
+        // EDITED FOR NUKKIT
         final Map<TextFormat, String> replacements = new EnumMap<TextFormat, String>(TextFormat.class);
 
         replacements

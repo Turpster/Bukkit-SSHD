@@ -33,7 +33,12 @@ public class SSHDCommandSender extends ConsoleCommandSender implements CommandSe
     public void sendRawMessage(String message) {
         if(ConsoleShellFactory.ConsoleShell.consoleReader == null) return;
         try {
+            /*
+             *   TODO
+             *   Instead of stripping color, change color for console output
+             */
             ConsoleShellFactory.ConsoleShell.consoleReader.println(NukkitUtil.stripColor(message));
+            ConsoleShellFactory.ConsoleShell.consoleReader.flush(); // Bukkit flushes after command execution, Nukkit does not.
         } catch (IOException e) {
             SshdPlugin.instance.getLogger().log(LogLevel.EMERGENCY, "Error sending message to SSHDCommandSender", e);
         }
