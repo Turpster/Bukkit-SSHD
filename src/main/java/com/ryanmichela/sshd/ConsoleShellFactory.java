@@ -15,7 +15,6 @@ import org.apache.sshd.server.ExitCallback;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.logging.Level;
 import java.util.logging.StreamHandler;
 
 public class ConsoleShellFactory implements Factory<Command> {
@@ -78,7 +77,7 @@ public class ConsoleShellFactory implements Factory<Command> {
             try {
                 consoleReader = new ConsoleReader(in, new FlushyOutputStream(out), new SshTerminal());
                 consoleReader.setExpandEvents(true);
-                consoleReader.addCompleter(new ConsoleCommandCompleter());
+//                consoleReader.addCompleter(new ConsoleCommandCompleter());
 
                 StreamHandler streamHandler = new FlushyStreamHandler(out, new ConsoleLogFormatter(), consoleReader);
                 streamHandlerAppender = new StreamHandlerAppender(streamHandler);
@@ -109,7 +108,7 @@ public class ConsoleShellFactory implements Factory<Command> {
                     // TODO Schedule Task might not execute but just schedule a task.- Turpster
                     TaskHandler tHandle = Server.getInstance().getScheduler().scheduleTask(SshdPlugin.instance, () -> {
                         if (SshdPlugin.instance.getConfig().getString("mode").equals("RPC") &&
-                            command.startsWith("rpc")) {
+                                command.startsWith("rpc")) {
                             //NO ECHO NO PREAMBLE AND SHIT
                             String cmd = command.substring("rpc".length() + 1, command.length());
                             Server.getInstance().dispatchCommand(sshdCommandSender, cmd);

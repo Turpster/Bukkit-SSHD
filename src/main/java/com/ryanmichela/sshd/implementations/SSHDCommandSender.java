@@ -11,13 +11,15 @@ import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.LogLevel;
 import com.ryanmichela.sshd.ConsoleShellFactory;
 import com.ryanmichela.sshd.SshdPlugin;
-import xyz.wackster.nukkitutils.Conversation;
-import xyz.wackster.nukkitutils.ConversationAbandonedEvent;
-import xyz.wackster.nukkitutils.ManuallyAbandonedConversationCanceller;
-import xyz.wackster.nukkitutils.NukkitUtil;
+
+import com.ryanmichela.sshd.nukkitutils.NukkitUtil;
 
 import java.io.IOException;
 import java.util.Arrays;
+
+import com.ryanmichela.sshd.nukkitutils.conversations.Conversation;
+import com.ryanmichela.sshd.nukkitutils.conversations.ConversationAbandonedEvent;
+import com.ryanmichela.sshd.nukkitutils.conversations.ManuallyAbandonedConversationCanceller;
 
 public class SSHDCommandSender extends ConsoleCommandSender implements CommandSender {
 

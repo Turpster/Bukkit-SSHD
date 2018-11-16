@@ -11,8 +11,10 @@ import cn.nukkit.Server;
 import cn.nukkit.command.CommandMap;
 import cn.nukkit.scheduler.TaskHandler;
 import cn.nukkit.utils.LogLevel;
+
 import jline.console.completer.Completer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -23,7 +25,9 @@ public class ConsoleCommandCompleter implements Completer {
             @Override
             protected List<String> evaluate() {
                 CommandMap commandMap = ReflectionUtil.getProtectedValue(Server.getInstance(), "commandMap");
-                return commandMap.tabComplete(Server.getInstance().getConsoleSender(), buffer);
+                // return commandMap.tabComplete(Server.getInstance().getConsoleSender(), buffer);
+                // TODO Get Tab completion to work with Nukkit
+                return new ArrayList<>();
             }
         }.run(Server.getInstance().getTick() + 1); // TODO Remove +1 and check it works afterwards - Turpster
         TaskHandler tHandle = Server.getInstance().getScheduler().scheduleTask(SshdPlugin.instance, waitable);

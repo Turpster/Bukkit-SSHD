@@ -2,9 +2,9 @@ package com.ryanmichela.sshd.implementations;
 
 import cn.nukkit.utils.LogLevel;
 import com.ryanmichela.sshd.SshdPlugin;
-import xyz.wackster.nukkitutils.Conversation;
-import xyz.wackster.nukkitutils.ConversationAbandonedEvent;
-import xyz.wackster.nukkitutils.ManuallyAbandonedConversationCanceller;
+import com.ryanmichela.sshd.nukkitutils.conversations.Conversation;
+import com.ryanmichela.sshd.nukkitutils.conversations.ConversationAbandonedEvent;
+import com.ryanmichela.sshd.nukkitutils.conversations.ManuallyAbandonedConversationCanceller;
 
 import java.util.LinkedList;
 

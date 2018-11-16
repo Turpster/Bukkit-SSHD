@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
-import xyz.wackster.nukkitutils.NukkitUtil;
+import com.ryanmichela.sshd.nukkitutils.NukkitUtil;
 
 import java.util.logging.Level;
 

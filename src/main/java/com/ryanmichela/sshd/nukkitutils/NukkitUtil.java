@@ -1,6 +1,5 @@
-package xyz.wackster.nukkitutils;
+package com.ryanmichela.sshd.nukkitutils;
 
-import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.utils.LogLevel;
 
 import java.util.logging.Level;
