@@ -38,9 +38,6 @@ public class ConsoleShellFactory implements Factory<Command> {
         private Environment environment;
         private Thread thread;
 
-        String command = ">";
-
-
         StreamHandlerAppender streamHandlerAppender;
         public static ConsoleReader consoleReader;
 
@@ -101,10 +98,13 @@ public class ConsoleShellFactory implements Factory<Command> {
 
         public synchronized void run() {
             try {
+
+                sshdCommandSender.addAttachment(SshdPlugin.instance, Server.BROADCAST_CHANNEL_USERS);
+
                 if (!SshdPlugin.instance.getConfig().getString("mode").equals("RPC"))
                     printPreamble(consoleReader);
                 while (true) {
-                    String command = consoleReader.readLine("\r>", null);
+                    String command = consoleReader.readLine("\r", null);
 
                     if (command == null) continue;
 
@@ -113,13 +113,14 @@ public class ConsoleShellFactory implements Factory<Command> {
                         if (SshdPlugin.instance.getConfig().getString("mode").equals("RPC") &&
                                 command.startsWith("rpc")) {
                             //NO ECHO NO PREAMBLE AND SHIT
-                            String cmd = command.substring("rpc".length() + 1, command.length());
+                            String cmd = command.substring("rpc".length() + 1);
                             Server.getInstance().dispatchCommand(sshdCommandSender, cmd);
                         } else {
                             SshdPlugin.instance.getLogger()
                                     .info("<" + environment.getEnv().get(Environment.ENV_USER) + "> " + command);
                             Server.getInstance().dispatchCommand(sshdCommandSender, command);
                         }
+
                     });
                 }
             } catch (IOException e) {
