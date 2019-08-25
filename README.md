@@ -1,6 +1,6 @@
 Nukkit-SSHD
 ===========
 
-[![Build Status](http://turpster.xyz:8080/job/Nukkit%20SSHD/badge/icon)](http://turpster.xyz:8080/job/Nukkit%20SSHD/)
+[![Build Status](https://turpster.xyz/jenkins/job/Nukkit%20SSHD/2/badge/icon)](https://turpster.xyz/jenkins/job/Nukkit%20SSHD/2/)
 
 A fork of an SSHD daemon embedded in a Nukkit plugin.
